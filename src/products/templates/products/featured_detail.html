@@ -1,0 +1,7 @@
+{% load static %}
+{{ object.title }} <br/>
+{{ object.desc }} <br/>
+{{ object.price }} <br/>
+{% if object.image %}
+    <img src='{{ object.image.url }}' class='img-fluid'/>
+{% endif %}
