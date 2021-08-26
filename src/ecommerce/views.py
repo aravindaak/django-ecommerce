@@ -8,7 +8,7 @@ def home_page(request):
     context = {
         "title": "Home Page"
     }
-    return render(request, "home_page.html", context)
+    return render(request, "home.html", context)
 
 def form_page(request):
     form= ContactForm(request.POST or None)
@@ -16,7 +16,6 @@ def form_page(request):
         "title": "Form Page",
         "form": form
     }
-    print(form.cleaned_data)
     return render(request, "forms/form.html", context)
 
 def login_page(request):

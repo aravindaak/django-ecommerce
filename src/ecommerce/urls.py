@@ -23,11 +23,11 @@ from .views import home_page,form_page, login_page, register_page
 
 # Check https://kirr.co/plqpin (or) https://www.codingforentrepreneurs.com/blog/common-regular-expressions-for-django-urls/ for reqex for django
 urlpatterns = [
-    path('register/', register_page),
-    path('login/', login_page),
-    path('home/', home_page),
-    path('form/', form_page),
-    path('products/', include("products.urls")),
+    path('register/', register_page, name='register'),
+    path('login/', login_page, name='login'),
+    path('home/', home_page, name='home'),
+    path('contact/', form_page, name='contact'),
+    path('products/', include(("products.urls", "products"), namespace="products")),
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
