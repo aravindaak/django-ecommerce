@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.db.models.base import Model
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
@@ -14,6 +15,10 @@ class ProductQuerySet(models.query.QuerySet):
 
     def active(self):
         return self.filter(active = True)
+    
+    def search(self, query):
+        lookups = Q(title__icontains=query) | Q(desc__icontains=query) | Q(tag__title__icontains=query) #tag_name is to have same tag for different products (eg: tshirt and t-shirt)
+        return self.filter(lookups).distinct()
 
 # Defining our own manager to give our functions for the Product.objects
 # can override default methods as well like below fn can be added to class
@@ -35,6 +40,9 @@ class ProductManager(models.Manager):
 
     def featured(self): #This featured() helps you do Product.objects.featured()
         return self.get_queryset().filter(featured= True)
+    
+    def search(self, query):
+        return self.get_queryset().active().search(query)
 
 class Product(models.Model):
     title = models.CharField(max_length=120)
