@@ -1,9 +1,10 @@
 from django.db import models
-from django.http import Http404
+from django.http import Http404, request
 from django.db.models.query import QuerySet
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render
 
+from carts.models import Cart
 from .models import Product, ProductManager
 
 
@@ -75,6 +76,12 @@ def product_detail_view(request, pk=None, *args, **kwargs):
 class ProductDetailSlugView(DetailView):
     queryset = Product.objects.all()
     template_name = "products/detail.html"
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        cart, is_new = Cart.objects.get_or_new(self.request)
+        context['cart'] = cart
+        return context
     
     def get_object(self, *args, **kwargs):
         slug = self.kwargs['slug']

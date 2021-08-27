@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{%block content %}
+<h1>Cart</h1>
+{% if cart.products.exists %}
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in cart.products.all %}
+    <tr>
+        <th scope="row">
+            <a href="{{ product.get_absolute_url }}">{{ product.title }}
+                <!-- {% if product.image %}
+                <img src='{{ product.image.url }}' class='img-fluid'/>
+                {% endif %} -->
+            </a>
+            {% include 'products/snippets/update_cart.html' with product=product %}
+            <!-- <a href="{% url 'carts:update' %}"><small>Remove from Cart</small></a> -->
+        </th>
+        <td>1</td>
+        <td>{{product.price}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <th></th>
+        <td><b> Subtotal</b></td>
+        <td><b>{{ cart.subtotal}}</b></td>
+    </tr>
+    <tr>
+        <th></th>
+        <td><b>Total</b></td>
+        <td><b>{{ cart.total}}</b></td>
+    </tr>
+  </tbody>
+</table>
+{% else %}
+<p class="lead"> Cart is empty</p>
+{% endif %}
+{% endblock %}
